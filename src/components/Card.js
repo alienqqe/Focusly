@@ -40,10 +40,29 @@ const soundStatus = {
 };
 
 const Card = (props, initialState = 0) => {
+  const {index, shuffleButtonClicked} = props
   const { timer, setTimer } = useContext(MyContext);
   const [isActive, setIsActive] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const countRef = useRef(null);
+  const [currentlyPlaying, setCurrentlyPlaying] = useState([])
+
+  const shuffleSounds = () => {
+    let playingSounds = []
+
+    for (let cnt = 0; cnt < 3; cnt++) {
+      var val = Math.floor(Math.random() * (10 - 1 + 1) + 1);
+      if (index == val) {
+        playingSounds.push(index)
+        handlePlay();
+      }
+    }
+    setCurrentlyPlaying(playingSounds);
+  };
+
+  useEffect(() => {
+    if (shuffleButtonClicked) shuffleSounds();
+  }, [shuffleButtonClicked]);
 
   const handleStart = () => {
     setIsActive(true);
